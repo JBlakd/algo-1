@@ -1,0 +1,1 @@
+Associate halves with logn time complexity. Develop on this idea until intuitive understanding is achieved.
