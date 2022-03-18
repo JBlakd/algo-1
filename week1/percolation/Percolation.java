@@ -10,10 +10,12 @@ import java.util.List;
 public class Percolation {
     private int[] grid;
     private boolean[] gridOpen;
+    private int gridDim;
     private int gridSize;
 
     // creates n-by-n grid, with all sites initially blocked
     public Percolation(int n) {
+        gridDim = n;
         gridSize = n * n;
 
         // n by n grid, plus top and bottom virtual sites
@@ -54,7 +56,7 @@ public class Percolation {
         }
         // Path Compression: just after computing the root, set the id of
         // each examined node to point to that root
-        for (Integer id : pVisited) {
+        for (int id : pVisited) {
             grid[id] = pRoot;
         }
 
@@ -90,25 +92,58 @@ public class Percolation {
         }
     }
 
+    private int toIndex(int row, int col) {
+        return (row - 1) * gridDim + col;
+    }
+
     // opens the site (row, col) if it is not open already
     public void open(int row, int col) {
-        
+        // Check up neighbour. If neighbour is open, union this site with neighbour
+        if (row > 1 && isOpen(row - 1, col)) {
+            union(toIndex(row, col), toIndex(row - 1, col));
+        }
+        // down
+        if (row < gridDim && isOpen(row + 1, col)) {
+            union(toIndex(row, col), toIndex(row + 1, col));
+        }
+        // left
+        if (col > 1 && isOpen(row, col - 1)) {
+            union(toIndex(row, col), toIndex(row, col - 1));
+        }
+        // right
+        if (col < gridDim && isOpen(row, col + 1)) {
+            union(toIndex(row, col), toIndex(row, col + 1));
+        }
     }
 
     // is the site (row, col) open?
     public boolean isOpen(int row, int col) {
+        return gridOpen[toIndex(row, col)];
     }
 
     // is the site (row, col) full?
     public boolean isFull(int row, int col) {
+        if (!isOpen(row, col)) {
+            return false;
+        }
+
+        return find(0, toIndex(row, col));
     }
 
     // returns the number of open sites
     public int numberOfOpenSites() {
+        int retval = 0;
+        for (int i = 1; i <= gridSize; i++) {
+            if (gridOpen[i]) {
+                retval++;
+            }
+        }
+        return retval;
     }
 
     // does the system percolate?
     public boolean percolates() {
+        return find(0, gridSize + 1);
     }
 
     public static void main(String[] args) {
