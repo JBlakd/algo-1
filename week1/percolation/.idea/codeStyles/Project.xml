@@ -6,7 +6,6 @@
       <option name="INSERT_OVERRIDE_ANNOTATION" value="false" />
       <option name="ANNOTATION_PARAMETER_WRAP" value="1" />
       <option name="ALIGN_MULTILINE_ANNOTATION_PARAMETERS" value="true" />
-      <option name="USE_SINGLE_CLASS_IMPORTS" value="true" />
       <option name="CLASS_COUNT_TO_USE_IMPORT_ON_DEMAND" value="20" />
       <option name="NAMES_COUNT_TO_USE_IMPORT_ON_DEMAND" value="20" />
       <option name="PACKAGES_TO_USE_IMPORT_ON_DEMAND">
@@ -22,7 +21,6 @@
       <option name="LINE_COMMENT_ADD_SPACE" value="true" />
       <option name="KEEP_FIRST_COLUMN_COMMENT" value="false" />
       <option name="BLANK_LINES_BEFORE_PACKAGE" value="1" />
-      <option name="ELSE_ON_NEW_LINE" value="true" />
       <option name="CATCH_ON_NEW_LINE" value="true" />
       <option name="FINALLY_ON_NEW_LINE" value="true" />
       <option name="ALIGN_MULTILINE_CHAINED_METHODS" value="true" />
