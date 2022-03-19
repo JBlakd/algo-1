@@ -4,19 +4,20 @@
  *  Last modified:     19/03/2022
  **************************************************************************** */
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Percolation {
 
     private int[] grid;
     private boolean[] gridOpen;
     // Very important during the Monte Carlo Simulation where we randomly open sites
-    private int gridDim;
-    private int gridSize;
+    private final int gridDim;
+    private final int gridSize;
 
     // creates n-by-n grid, with all sites initially blocked
     public Percolation(int n) {
+        if (n <= 0) {
+            throw new IllegalArgumentException();
+        }
+
         gridDim = n;
         gridSize = n * n;
 
@@ -33,19 +34,21 @@ public class Percolation {
         // Initializing every site
         // non virtual sites has a starting index of 1
         for (int i = 1; i <= gridSize; i++) {
-            if (i <= n) {
-                // connect top row sites to top virtual site
-                grid[i] = 0;
-                gridOpen[i] = true;
-            } else if (i <= gridSize && i > (gridSize - n)) {
-                // connect bottom row sites to bottom virtual site
-                grid[i] = gridSize + 1;
-                gridOpen[i] = true;
-            } else {
-                // connect non-virtual sites to itself
-                grid[i] = i;
-                gridOpen[i] = false;
-            }
+            // if (i <= n) {
+            //     // connect top row sites to top virtual site
+            //     grid[i] = 0;
+            //     // gridOpen[i] = false;
+            // } else if (i <= gridSize && i > (gridSize - n)) {
+            //     // connect bottom row sites to bottom virtual site
+            //     grid[i] = gridSize + 1;
+            //     // gridOpen[i] = false;
+            // } else {
+            //     // connect non-virtual sites to itself
+            //     grid[i] = i;
+            //     // gridOpen[i] = false;
+            // }
+            grid[i] = i;
+            gridOpen[i] = false;
         }
     }
 
@@ -53,31 +56,43 @@ public class Percolation {
         int[] retval = new int[2];
 
         int pRoot = p;
-        List<Integer> pVisited = new ArrayList<Integer>();
+        // List<Integer> pVisited = new ArrayList<Integer>();
+        int[] pVisited = new int[gridSize];
+        int numVisited = 0;
 
         // Find root of p
         while (grid[pRoot] != pRoot) {
-            pVisited.add(pRoot);
+            // pVisited.add(pRoot);
+            pVisited[numVisited] = pRoot;
+            numVisited++;
             pRoot = grid[pRoot];
         }
         // Path Compression: just after computing the root, set the id of
         // each examined node to point to that root
-        for (int id : pVisited) {
-            grid[id] = pRoot;
+        for (int i = 0; i < numVisited; i++) {
+            grid[pVisited[i]] = pRoot;
         }
+        // for (int id : pVisited) {
+        //     grid[id] = pRoot;
+        // }
 
         retval[0] = pRoot;
-        retval[1] = pVisited.size();
+        // retval[1] = pVisited.size();
+        retval[1] = numVisited;
         return retval;
     }
 
     private boolean find(int p, int q) {
         // Index 0 of root() return value is the root itself
-        if (root(p)[0] == root(q)[0]) {
-            return true;
-        } else {
-            return false;
-        }
+
+        return (root(p)[0] == root(q)[0]);
+
+        // Readable form:
+        // if (root(p)[0] == root(q)[0]) {
+        //     return true;
+        // } else {
+        //     return false;
+        // }
     }
 
     private void union(int p, int q) {
@@ -116,14 +131,36 @@ public class Percolation {
 
     // opens the site (row, col) if it is not open already
     public void open(int row, int col) {
-        // Check up neighbour. If neighbour is open, union this site with neighbour
-        if (row > 1 && isOpen(row - 1, col)) {
-            union(toIndex(row, col), toIndex(row - 1, col));
+        if (row <= 0 || col <= 0 || row > gridDim || col > gridDim) {
+            throw new IllegalArgumentException();
         }
+
+        if (isOpen(row, col)) {
+            return;
+        }
+
+        // Checking up neighbour. If neighbour is open, union this site with neighbour
+        if (row > 1) {
+            if (isOpen(row - 1, col)) {
+                union(toIndex(row, col), toIndex(row - 1, col));
+            }
+        } else {
+            // Special case for checking up if at row 1
+            // Union with top virtual site
+            union(toIndex(row, col), 0);
+        }
+
         // down
-        if (row < gridDim && isOpen(row + 1, col)) {
-            union(toIndex(row, col), toIndex(row + 1, col));
+        if (row < gridDim) {
+            if (isOpen(row + 1, col)) {
+                union(toIndex(row, col), toIndex(row + 1, col));
+            }
+        } else {
+            // Special case for checking down if at final row
+            // Union with bottom virtual site
+            union(toIndex(row, col), gridSize + 1);
         }
+
         // left
         if (col > 1 && isOpen(row, col - 1)) {
             union(toIndex(row, col), toIndex(row, col - 1));
@@ -138,11 +175,19 @@ public class Percolation {
 
     // is the site (row, col) open?
     public boolean isOpen(int row, int col) {
+        if (row <= 0 || col <= 0 || row > gridDim || col > gridDim) {
+            throw new IllegalArgumentException();
+        }
+
         return gridOpen[toIndex(row, col)];
     }
 
     // is the site (row, col) full?
     public boolean isFull(int row, int col) {
+        if (row <= 0 || col <= 0 || row > gridDim || col > gridDim) {
+            throw new IllegalArgumentException();
+        }
+
         if (!isOpen(row, col)) {
             return false;
         }
@@ -166,7 +211,7 @@ public class Percolation {
         return find(0, gridSize + 1);
     }
 
-    public static void main(String[] args) {
-
-    }
+    // public static void main(String[] args) {
+    //
+    // }
 }
