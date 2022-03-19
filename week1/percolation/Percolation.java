@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Percolation {
-    public ArrayList<Integer> blockedSites;
 
     private int[] grid;
     private boolean[] gridOpen;
@@ -24,7 +23,6 @@ public class Percolation {
         // n by n grid, plus top and bottom virtual sites
         grid = new int[gridSize + 2];
         gridOpen = new boolean[gridSize + 2];
-        blockedSites = new ArrayList<Integer>();
 
         // Top and bottom virtual sites
         grid[0] = 0;
@@ -47,7 +45,6 @@ public class Percolation {
                 // connect non-virtual sites to itself
                 grid[i] = i;
                 gridOpen[i] = false;
-                blockedSites.add(i);
             }
         }
     }
@@ -137,7 +134,6 @@ public class Percolation {
         }
 
         gridOpen[toIndex(row, col)] = true;
-        blockedSites.removeIf(site -> (site == toIndex(row, col)));
     }
 
     // is the site (row, col) open?
