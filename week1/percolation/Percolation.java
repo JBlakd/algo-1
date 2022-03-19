@@ -1,15 +1,18 @@
 /* *****************************************************************************
  *  Name:              Ivan Hu
  *  Coursera User ID:  449db745b604e09acceeb1b09161636d
- *  Last modified:     17/03/2022
+ *  Last modified:     19/03/2022
  **************************************************************************** */
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Percolation {
+    public ArrayList<Integer> blockedSites;
+
     private int[] grid;
     private boolean[] gridOpen;
+    // Very important during the Monte Carlo Simulation where we randomly open sites
     private int gridDim;
     private int gridSize;
 
@@ -21,6 +24,7 @@ public class Percolation {
         // n by n grid, plus top and bottom virtual sites
         grid = new int[gridSize + 2];
         gridOpen = new boolean[gridSize + 2];
+        blockedSites = new ArrayList<Integer>();
 
         // Top and bottom virtual sites
         grid[0] = 0;
@@ -28,17 +32,22 @@ public class Percolation {
         grid[gridSize + 1] = gridSize + 1;
         gridOpen[gridSize + 1] = true;
 
+        // Initializing every site
         // non virtual sites has a starting index of 1
         for (int i = 1; i <= gridSize; i++) {
             if (i <= n) {
                 // connect top row sites to top virtual site
                 grid[i] = 0;
+                gridOpen[i] = true;
             } else if (i <= gridSize && i > (gridSize - n)) {
                 // connect bottom row sites to bottom virtual site
                 grid[i] = gridSize + 1;
+                gridOpen[i] = true;
             } else {
                 // connect non-virtual sites to itself
                 grid[i] = i;
+                gridOpen[i] = false;
+                blockedSites.add(i);
             }
         }
     }
@@ -96,6 +105,18 @@ public class Percolation {
         return (row - 1) * gridDim + col;
     }
 
+    // private int[] toCoord(int index) {
+    //     int[] coord = new int[2];
+    //     coord[0] = (index / gridDim) + 1;
+    //     coord[1] = index % gridDim;
+    //     return coord;
+    // }
+
+    // public void openRandomBlocked() {
+    //     int[] coord = toCoord(blockedSites.get(StdRandom.uniform(blockedSites.size())));
+    //     open(coord[0], coord[1]);
+    // }
+
     // opens the site (row, col) if it is not open already
     public void open(int row, int col) {
         // Check up neighbour. If neighbour is open, union this site with neighbour
@@ -114,6 +135,9 @@ public class Percolation {
         if (col < gridDim && isOpen(row, col + 1)) {
             union(toIndex(row, col), toIndex(row, col + 1));
         }
+
+        gridOpen[toIndex(row, col)] = true;
+        blockedSites.removeIf(site -> (site == toIndex(row, col)));
     }
 
     // is the site (row, col) open?
