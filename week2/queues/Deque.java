@@ -77,6 +77,12 @@ public class Deque<Item> implements Iterable<Item> {
     public Item removeFirst() {
         if (isEmpty()) throw new NoSuchElementException("Stack underflow");
         Item item = first.item; // save oldFirst's item to return
+        if (n == 1) {
+            first = null;
+            last = null;
+            n--;
+            return item;
+        }
         first = first.prev;     // Reassign first to oldFirst.prev
         first.next = null;      // oldFirst is now unreferenced and garbage-collected
         n--;
@@ -88,6 +94,12 @@ public class Deque<Item> implements Iterable<Item> {
     public Item removeLast() {
         if (isEmpty()) throw new NoSuchElementException("Stack underflow");
         Item item = last.item;  // save oldLast's item to return
+        if (n == 1) {
+            first = null;
+            last = null;
+            n--;
+            return item;
+        }
         last = last.next;       // Reassign last to oldLast.next
         last.prev = null;       // oldLast is now unreferenced and garbage-collected
         n--;
@@ -183,5 +195,12 @@ public class Deque<Item> implements Iterable<Item> {
             StdOut.print(word);
             StdOut.print(" ");
         }
+        StdOut.print("\n");
+        while (deque.size() != 0) {
+            StdOut.print(deque.removeLast());
+            StdOut.print(" ");
+        }
+        assert (deque.isEmpty());
+        assert (deque.size() == 0);
     }
 }
