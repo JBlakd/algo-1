@@ -75,7 +75,13 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="settings.saveactions" />
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.BruteCollinearPointsClient">
+    <configuration name="BruteCollinearPointsClient" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="BruteCollinearPointsClient" />
+      <module name="Algorithms, Part I" />
+      <option name="PROGRAM_PARAMETERS" value="input400.txt" />
+      <method v="2" />
+    </configuration>
     <configuration name="Point" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="Point" />
       <module name="Algorithms, Part I" />
