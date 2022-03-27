@@ -1,8 +1,8 @@
 /* *****************************************************************************
- *  Name:
- *  Date:
- *  Description:
- **************************************************************************** */
+ *  Name: Ivan Hu
+ *  Date: 27/03/2022
+ *  Description: Algos 1 course Collinear assignment
+ ******************************************************************************/
 
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdDraw;
@@ -32,6 +32,17 @@ public class BruteCollinearPointsClient {
 
         // print and draw the line segments
         BruteCollinearPoints collinear = new BruteCollinearPoints(points);
+
+        // check more cases that the number of segments are ok
+        if (args[0].equals("inputivan.txt")) {
+            // StdOut.println(args[0] + " numberOfSegments = " + collinear.numberOfSegments());
+            if (collinear.numberOfSegments() != 3) {
+                throw new RuntimeException(
+                        "inputivan.txt failed number of segments. Expected 3, got " + collinear
+                                .numberOfSegments());
+            }
+        }
+
         for (LineSegment segment : collinear.segments()) {
             StdOut.println(segment);
             segment.draw();

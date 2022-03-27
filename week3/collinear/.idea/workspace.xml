@@ -79,7 +79,7 @@
     <configuration name="BruteCollinearPointsClient" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="BruteCollinearPointsClient" />
       <module name="Algorithms, Part I" />
-      <option name="PROGRAM_PARAMETERS" value="input400.txt" />
+      <option name="PROGRAM_PARAMETERS" value="input6.txt" />
       <method v="2" />
     </configuration>
     <configuration name="Point" type="Application" factoryName="Application">
@@ -127,5 +127,26 @@
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Palette&#9;" order="3" />
     </layout>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/BruteCollinearPoints.java</url>
+          <line>78</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="Application">
+        <watch expression="points[i]" language="JAVA" />
+        <watch expression="points[j]" language="JAVA" />
+        <watch expression="points[k]" language="JAVA" />
+        <watch expression="points[m]" language="JAVA" />
+        <watch expression="points[j].compareTo(points[k])" language="JAVA" />
+        <watch expression="((points[j].compareTo(points[k]) &gt; 0 &amp;&amp; direction &gt; 0) || (                             points[j].compareTo(points[k]) &lt; 0 &amp;&amp; direction &lt; 0))" language="JAVA" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>
