@@ -79,7 +79,7 @@
     <configuration name="BruteCollinearPointsClient" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="BruteCollinearPointsClient" />
       <module name="Algorithms, Part I" />
-      <option name="PROGRAM_PARAMETERS" value="input6.txt" />
+      <option name="PROGRAM_PARAMETERS" value="rs1423.txt" />
       <method v="2" />
     </configuration>
     <configuration name="Point" type="Application" factoryName="Application">
@@ -133,7 +133,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/BruteCollinearPoints.java</url>
-          <line>78</line>
+          <line>77</line>
           <option name="timeStamp" value="9" />
         </line-breakpoint>
       </breakpoints>

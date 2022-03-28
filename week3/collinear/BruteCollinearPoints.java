@@ -18,8 +18,7 @@ public class BruteCollinearPoints {
     }
 
     private ResizingArrayStack<LineSegment> segments;
-
-
+    
     // finds all line segments containing 4 points
     public BruteCollinearPoints(Point[] points) {
         if (points == null) {
