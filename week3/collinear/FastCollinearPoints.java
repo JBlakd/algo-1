@@ -78,10 +78,9 @@ public class FastCollinearPoints {
     private static void merge(Point[] a, Point[] aux, int lo, int mid, int hi,
                               Comparator<Point> slopeOrder) {
         // Copy data into aux array
-        // ELIMINATED DUE TO COPYING BACK AND FORTH BETWEEN a AND aux
-        // for (int k = lo; k < hi; k++) {
-        //     aux[k] = a[k];
-        // }
+        for (int k = lo; k <= hi; k++) {
+            aux[k] = a[k];
+        }
 
         // Left aux tracker
         int i = lo;
@@ -91,22 +90,22 @@ public class FastCollinearPoints {
         for (int k = lo; k <= hi; k++) {
             // If the left aux tracker is exhausted
             if (i > mid) {
-                aux[k] = a[j];
+                a[k] = aux[j];
                 j++;
             }
             // If the right aux tracker is exhausted
             else if (j > hi) {
-                aux[k] = a[i];
+                a[k] = aux[i];
                 i++;
             }
             // If aux[j] has a lower slopeOrder than aux[i]
-            else if (slopeOrder.compare(a[j], a[i]) < 0) {
-                aux[k] = a[j];
+            else if (slopeOrder.compare(aux[j], aux[i]) < 0) {
+                a[k] = aux[j];
                 j++;
             }
             // If aux[i] has a lower slopeOrder than aux[j]
             else {
-                aux[k] = a[i];
+                a[k] = aux[i];
                 i++;
             }
         }
@@ -120,14 +119,13 @@ public class FastCollinearPoints {
         }
 
         int mid = lo + (hi - lo) / 2;
-        mergeSort(aux, a, lo, mid, slopeOrder);
-        mergeSort(aux, a, mid + 1, hi, slopeOrder);
+        mergeSort(a, aux, lo, mid, slopeOrder);
+        mergeSort(a, aux, mid + 1, hi, slopeOrder);
         // Check to save some effort:
         // already sorted if the biggest item in Left half is <= smallest item in Right half
         // if (slopeOrder.compare(a[mid], a[mid + 1]) <= 0) {
         //     return;
         // }
-        // Back and forth copying between a and aux
         merge(a, aux, lo, mid, hi, slopeOrder);
     }
 
