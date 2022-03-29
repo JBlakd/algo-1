@@ -90,7 +90,7 @@
     <configuration name="FastCollinearPointsClient" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="FastCollinearPointsClient" />
       <module name="Algorithms, Part I" />
-      <option name="PROGRAM_PARAMETERS" value="inputivan.txt" />
+      <option name="PROGRAM_PARAMETERS" value="input6.txt" />
       <method v="2" />
     </configuration>
     <configuration name="Point" type="Application" factoryName="Application">
@@ -146,27 +146,11 @@
           <properties class="java.lang.NullPointerException" package="java.lang" />
           <option name="timeStamp" value="12" />
         </breakpoint>
-        <line-breakpoint type="java-line">
-          <url>file://$PROJECT_DIR$/FastCollinearPoints.java</url>
-          <line>43</line>
-          <option name="timeStamp" value="15" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/FastCollinearPoints.java</url>
-          <line>58</line>
-          <option name="timeStamp" value="18" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/FastCollinearPoints.java</url>
-          <line>91</line>
-          <option name="timeStamp" value="19" />
-        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <watches-manager>
       <configuration name="Application">
-        <watch expression="slopeOrder" language="JAVA" />
-        <watch expression="q1" language="JAVA" />
+        <watch expression="otherPoints[j]" language="JAVA" />
       </configuration>
     </watches-manager>
   </component>

@@ -6,6 +6,7 @@
 
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdDraw;
+import edu.princeton.cs.algs4.StdOut;
 
 public class FastCollinearPointsClient {
     public static void main(String[] args) {
@@ -42,10 +43,10 @@ public class FastCollinearPointsClient {
         //     }
         // }
 
-        // for (LineSegment segment : collinear.segments()) {
-        //     StdOut.println(segment);
-        //     segment.draw();
-        // }
-        // StdDraw.show();
+        for (LineSegment segment : collinear.segments()) {
+            StdOut.println(segment);
+            segment.draw();
+        }
+        StdDraw.show();
     }
 }

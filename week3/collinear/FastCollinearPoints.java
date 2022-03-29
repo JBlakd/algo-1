@@ -5,20 +5,20 @@
  ******************************************************************************/
 
 import edu.princeton.cs.algs4.ResizingArrayStack;
-import edu.princeton.cs.algs4.StdOut;
 
 import java.util.Comparator;
 
 public class FastCollinearPoints {
-    // private class LineSegmentSingleRecord {
-    //     private Point endPoint;
-    //     private double slope;
-    //
-    //     private LineSegmentSingleRecord(Point endPoint, double slope) {
-    //         this.endPoint = endPoint;
-    //         this.slope = slope;
-    //     }
-    // }
+    private class LineSegmentSingleRecord {
+        private Point endPoint;
+        private double slope;
+
+        private LineSegmentSingleRecord(Point endPoint, double slope) {
+            this.endPoint = endPoint;
+            this.slope = slope;
+        }
+    }
+
     private ResizingArrayStack<LineSegment> segments;
 
     // finds all line segments containing 4 or more points
@@ -28,8 +28,8 @@ public class FastCollinearPoints {
         }
 
         segments = new ResizingArrayStack<LineSegment>();
-        // ResizingArrayStack<LineSegmentSingleRecord> lineSegmentRecord =
-        //         new ResizingArrayStack<LineSegmentSingleRecord>();
+        ResizingArrayStack<LineSegmentSingleRecord> lineSegmentRecord =
+                new ResizingArrayStack<LineSegmentSingleRecord>();
 
         for (int i = 0; i < points.length; i++) {
             if (points[i] == null) {
@@ -59,19 +59,57 @@ public class FastCollinearPoints {
             mergeSort(otherPoints, aux, 0, otherPoints.length - 1, slopeOrder);
 
             // For this point, print out its sorted otherPoints and the slope of each otherPoint
-            StdOut.print(points[i]);
-            StdOut.print(" => ");
-            for (Point otherPoint : otherPoints) {
-                StdOut.print(otherPoint + ", ");
+            // StdOut.print(points[i]);
+            // StdOut.print(" => ");
+            // for (Point otherPoint : otherPoints) {
+            //     StdOut.print(otherPoint + ", ");
+            // }
+            // StdOut.println();
+            // StdOut.print(points[i]);
+            // StdOut.print(" => ");
+            // for (Point otherPoint : otherPoints) {
+            //     StdOut.print(points[i].slopeTo(otherPoint) + ", ");
+            // }
+            // StdOut.println();
+            // StdOut.println();
+
+            // otherPoints are sorted now, iterate through this array to obtain the linesegments
+            double previousPointSlope = points[i].slopeTo(otherPoints[0]);
+            int consecutive = 1;
+            for (int j = 1; j < otherPoints.length; j++) {
+                Double thisPointSlope = points[i].slopeTo(otherPoints[j]);
+                if (thisPointSlope.equals(previousPointSlope)) {
+                    consecutive++;
+                }
+                else {
+                    // it's come to a new slope
+
+                    // Blacklist nonEndPoints
+                    for (int k = j - 2; k > (j - consecutive); k--) {
+                        lineSegmentRecord.push(new LineSegmentSingleRecord(otherPoints[k],
+                                                                           previousPointSlope));
+                    }
+
+                    if (consecutive >= 3) {
+                        // Check if not in blacklist
+                        for (LineSegmentSingleRecord lssr : lineSegmentRecord) {
+                            if (points[i].compareTo(lssr.endPoint) == 0
+                                    && previousPointSlope == lssr.slope) {
+                                return;
+                            }
+                            if (otherPoints[j - 1].compareTo(lssr.endPoint) == 0
+                                    && previousPointSlope == lssr.slope) {
+                                return;
+                            }
+                        }
+
+                        segments.push(new LineSegment(points[i], otherPoints[j - 1]));
+                    }
+                    consecutive = 1;
+                    previousPointSlope = points[i].slopeTo(otherPoints[j]);
+                }
             }
-            StdOut.println();
-            StdOut.print(points[i]);
-            StdOut.print(" => ");
-            for (Point otherPoint : otherPoints) {
-                StdOut.print(points[i].slopeTo(otherPoint) + ", ");
-            }
-            StdOut.println();
-            StdOut.println();
+
         }
     }
 
