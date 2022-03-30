@@ -42,7 +42,8 @@ public class FastCollinearPointsClient {
         //                         .numberOfSegments());
         //     }
         // }
-
+        
+        StdOut.println("Number of segments: " + collinear.numberOfSegments());
         for (LineSegment segment : collinear.segments()) {
             StdOut.println(segment);
             segment.draw();

@@ -9,17 +9,17 @@ import edu.princeton.cs.algs4.ResizingArrayStack;
 import java.util.Comparator;
 
 public class FastCollinearPoints {
-    private class LineSegmentSingleRecord {
-        private Point endPoint;
-        private double slope;
+    // private class LineSegmentSingleRecord {
+    //     private Point endPoint;
+    //     private double slope;
+    //
+    //     private LineSegmentSingleRecord(Point endPoint, double slope) {
+    //         this.endPoint = endPoint;
+    //         this.slope = slope;
+    //     }
+    // }
 
-        private LineSegmentSingleRecord(Point endPoint, double slope) {
-            this.endPoint = endPoint;
-            this.slope = slope;
-        }
-    }
-
-    private ResizingArrayStack<LineSegment> segments;
+    private final ResizingArrayStack<LineSegment> segments;
 
     // finds all line segments containing 4 or more points
     public FastCollinearPoints(Point[] points) {
@@ -28,8 +28,8 @@ public class FastCollinearPoints {
         }
 
         segments = new ResizingArrayStack<LineSegment>();
-        ResizingArrayStack<LineSegmentSingleRecord> lineSegmentRecord =
-                new ResizingArrayStack<LineSegmentSingleRecord>();
+        // ResizingArrayStack<LineSegmentSingleRecord> lineSegmentRecord =
+        //         new ResizingArrayStack<LineSegmentSingleRecord>();
 
         for (int i = 0; i < points.length; i++) {
             if (points[i] == null) {
@@ -74,43 +74,67 @@ public class FastCollinearPoints {
             // StdOut.println();
 
             // otherPoints are sorted now, iterate through this array to obtain the linesegments
+            // Since we are starting at j = 1, gotta process j = 0 first
             double previousPointSlope = points[i].slopeTo(otherPoints[0]);
             int consecutive = 1;
+            Point lowestPoint;
+            if (points[i].compareTo(otherPoints[0]) < 0) {
+                lowestPoint = points[i];
+            }
+            else {
+                lowestPoint = otherPoints[0];
+            }
+            Point highestPoint;
+            if (points[i].compareTo(otherPoints[0]) > 0) {
+                highestPoint = points[i];
+            }
+            else {
+                highestPoint = otherPoints[0];
+            }
             for (int j = 1; j < otherPoints.length; j++) {
-                Double thisPointSlope = points[i].slopeTo(otherPoints[j]);
-                if (thisPointSlope.equals(previousPointSlope)) {
+                double thisPointSlope = points[i].slopeTo(otherPoints[j]);
+                if (Double.compare(thisPointSlope, previousPointSlope) == 0) {
+                    // otherPoints[j] still on the same slope
+                    // if the current lowestPoint is bigger than otherPoints[j] then otherPoints[j] becomes the new lowestPoint
+                    if (lowestPoint.compareTo(otherPoints[j]) > 0) {
+                        lowestPoint = otherPoints[j];
+                    }
+
+                    // if the current highestPoint is smaller than otherPoints[j] then otherPoints[j] becomes the new highestPoint
+                    if (highestPoint.compareTo(otherPoints[j]) < 0) {
+                        highestPoint = otherPoints[j];
+                    }
                     consecutive++;
                 }
                 else {
-                    // it's come to a new slope
-
-                    // Blacklist nonEndPoints
-                    for (int k = j - 2; k > (j - consecutive); k--) {
-                        lineSegmentRecord.push(new LineSegmentSingleRecord(otherPoints[k],
-                                                                           previousPointSlope));
+                    // now otherPoints[j] has reached the next slope
+                    // we ONLY add a segment if points[i] is the lowestPoint and consecutive >= 3
+                    if (consecutive >= 3 && points[i].compareTo(lowestPoint) == 0) {
+                        segments.push(new LineSegment(points[i], highestPoint));
                     }
-
-                    if (consecutive >= 3) {
-                        // Check if not in blacklist
-                        for (LineSegmentSingleRecord lssr : lineSegmentRecord) {
-                            if (points[i].compareTo(lssr.endPoint) == 0
-                                    && previousPointSlope == lssr.slope) {
-                                return;
-                            }
-                            if (otherPoints[j - 1].compareTo(lssr.endPoint) == 0
-                                    && previousPointSlope == lssr.slope) {
-                                return;
-                            }
-                        }
-
-                        segments.push(new LineSegment(points[i], otherPoints[j - 1]));
-                    }
+                    // reset consecutive
                     consecutive = 1;
+                    // reset lowestPoint
+                    if (points[i].compareTo(otherPoints[j]) < 0) {
+                        lowestPoint = points[i];
+                    }
+                    else {
+                        lowestPoint = otherPoints[j];
+                    }
+                    // reset highestPoint
+                    if (points[i].compareTo(otherPoints[j]) > 0) {
+                        highestPoint = points[i];
+                    }
+                    else {
+                        highestPoint = otherPoints[j];
+                    }
+                    // reset previousPointSlope
                     previousPointSlope = points[i].slopeTo(otherPoints[j]);
                 }
             }
 
         }
+
     }
 
     private static void merge(Point[] a, Point[] aux, int lo, int mid, int hi,

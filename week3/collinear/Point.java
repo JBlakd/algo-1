@@ -69,6 +69,10 @@ public class Point implements Comparable<Point> {
             return Double.POSITIVE_INFINITY;
         }
 
+        if (this.y == that.y) {
+            return +0.0;
+        }
+
         return ((double) that.y - this.y) / (that.x - this.x);
     }
 
@@ -103,26 +107,22 @@ public class Point implements Comparable<Point> {
 
     private class SlopeOrder implements Comparator<Point> {
         public int compare(Point q1, Point q2) {
-            if (Double.compare(slopeTo(q1), slopeTo(q2)) != 0) {
-                return Double.compare(slopeTo(q1), slopeTo(q2));
-            }
-            else {
-                // If same slope, the closer point comes first
-
-                // If both of the two points in relation to this point are positive...
-                if (Point.this.compareTo(q1) < 0 && Point.this.compareTo(q2) < 0) {
-                    // ...then the closer one is the least positive out of the two
-                    return q1.compareTo(q2);
-                }
-                else {
-                    // Else, the opposite is true
-                    return q2.compareTo(q1);
-                }
-
-                // return Double.compare(sqDistanceTo(q1), sqDistanceTo(q2)); CORRECT BUT COULD BE BETTER?
-                // return q1.compareTo(q2); WRONG
-                // return Double.compare(Point.this.compareTo(q1), Point.this.compareTo(q2));
-            }
+            // if (Double.compare(slopeTo(q1), slopeTo(q2)) != 0) {
+            return Double.compare(slopeTo(q1), slopeTo(q2));
+            // }
+            // else {
+            //     // If same slope, the closer point comes first
+            //
+            //     // If both of the two points in relation to this point are positive...
+            //     if (Point.this.compareTo(q1) < 0 && Point.this.compareTo(q2) < 0) {
+            //         // ...then the closer one is the least positive out of the two
+            //         return q1.compareTo(q2);
+            //     }
+            //     else {
+            //         // Else, the opposite is true
+            //         return q2.compareTo(q1);
+            //     }
+            // }
         }
     }
 

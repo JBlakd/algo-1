@@ -8,8 +8,8 @@ import edu.princeton.cs.algs4.ResizingArrayStack;
 
 public class BruteCollinearPoints {
     private class LineSegmentSingleRecord {
-        private Point endPoint;
-        private double slope;
+        private final Point endPoint;
+        private final double slope;
 
         private LineSegmentSingleRecord(Point endPoint, double slope) {
             this.endPoint = endPoint;
@@ -17,12 +17,17 @@ public class BruteCollinearPoints {
         }
     }
 
-    private ResizingArrayStack<LineSegment> segments;
-    
+    private final ResizingArrayStack<LineSegment> segments;
+
     // finds all line segments containing 4 points
     public BruteCollinearPoints(Point[] points) {
         if (points == null) {
             throw new IllegalArgumentException();
+        }
+        for (Point pt : points) {
+            if (pt == null) {
+                throw new IllegalArgumentException();
+            }
         }
 
         segments = new ResizingArrayStack<LineSegment>();
@@ -50,7 +55,7 @@ public class BruteCollinearPoints {
                 // of an established lineSegment
                 boolean lineAlreadyExists = false;
                 for (LineSegmentSingleRecord lssr : lineSegmentRecord) {
-                    if (points[i] == lssr.endPoint && lssr.slope == slope) {
+                    if (points[i] == lssr.endPoint && Double.compare(lssr.slope, slope) == 0) {
                         lineAlreadyExists = true;
                     }
                 }
