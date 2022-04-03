@@ -81,8 +81,7 @@ public class Board {
     public int manhattan() {
         int manhattanSum = 0;
 
-        // Loop until penultimate because the last element should be 0 and not needed to consider
-        for (int i = 1; i < squareSize; i++) {
+        for (int i = 1; i <= squareSize; i++) {
             if (a[i] == i || a[i] == 0) {
                 continue;
             }
@@ -182,7 +181,7 @@ public class Board {
 
         int[] reuseableCopy1D;
 
-        // top neighbour
+        // top neighbour. Check if not in top row.
         if (zeroIndex - squareSide >= 1) {
             reuseableCopy1D = Arrays.copyOf(a, a.length);
             reuseableCopy1D[zeroIndex] = reuseableCopy1D[zeroIndex - squareSide];
@@ -190,7 +189,7 @@ public class Board {
             neighbors.add(new Board(toSquare(reuseableCopy1D, squareSide)));
         }
 
-        // bottom neighbour
+        // bottom neighbour. Check if not in bottom row.
         if (zeroIndex + squareSide <= squareSize) {
             reuseableCopy1D = Arrays.copyOf(a, a.length);
             reuseableCopy1D[zeroIndex] = reuseableCopy1D[zeroIndex + squareSide];
@@ -198,16 +197,16 @@ public class Board {
             neighbors.add(new Board(toSquare(reuseableCopy1D, squareSide)));
         }
 
-        // left neighbour
-        if (zeroIndex - 1 >= 1) {
+        // left neighbour. Check if not in column 1
+        if (!(zeroIndex % squareSide == 1)) {
             reuseableCopy1D = Arrays.copyOf(a, a.length);
             reuseableCopy1D[zeroIndex] = reuseableCopy1D[zeroIndex - 1];
             reuseableCopy1D[zeroIndex - 1] = 0;
             neighbors.add(new Board(toSquare(reuseableCopy1D, squareSide)));
         }
 
-        // right neighbour
-        if (zeroIndex + 1 <= squareSize) {
+        // right neighbour. Check if not in last column
+        if (!(zeroIndex % squareSide == 0)) {
             reuseableCopy1D = Arrays.copyOf(a, a.length);
             reuseableCopy1D[zeroIndex] = reuseableCopy1D[zeroIndex + 1];
             reuseableCopy1D[zeroIndex + 1] = 0;
@@ -221,7 +220,7 @@ public class Board {
     public Board twin() {
         // Choose random tile index
         int randIdx = StdRandom.uniform(1, squareSize + 1);
-        while (a[randIdx] != 0) {
+        while (a[randIdx] == 0) {
             randIdx = StdRandom.uniform(1, squareSize + 1);
         }
 
@@ -229,15 +228,19 @@ public class Board {
         // Left is 0, Top is 1, Right is 2, Bottom is 3
         // boolean[] swappable = new boolean[4];
         ArrayList<Integer> swappable = new ArrayList<Integer>();
-        if (randIdx - 1 >= 1 && a[randIdx - 1] != 0) {
+        // left
+        if (!(randIdx % squareSide == 1) && a[randIdx - 1] != 0) {
             swappable.add(0);
         }
+        // top
         if (randIdx - squareSide >= 1 && a[randIdx - squareSide] != 0) {
             swappable.add(1);
         }
-        if (randIdx + 1 <= squareSize && a[randIdx + 1] != 0) {
+        // right
+        if (!(randIdx % squareSide == 0) && a[randIdx + 1] != 0) {
             swappable.add(2);
         }
+        // bottom
         if (randIdx + squareSide <= squareSize && a[randIdx + squareSide] != 0) {
             swappable.add(3);
         }
@@ -271,9 +274,16 @@ public class Board {
 
     // unit testing (not graded)
     public static void main(String[] args) {
+        // This one passed
+        // int[][] reuseable2D = {
+        //         { 8, 1, 3 },
+        //         { 4, 0, 2 },
+        //         { 7, 6, 5 }
+        // };
+
         int[][] reuseable2D = {
-                { 8, 1, 3 },
-                { 4, 0, 2 },
+                { 8, 1, 0 },
+                { 4, 3, 2 },
                 { 7, 6, 5 }
         };
         Board reuseableBoard = new Board(reuseable2D);
@@ -293,8 +303,8 @@ public class Board {
         }
 
         int[][] reuseable2D_2 = {
-                { 8, 1, 3 },
-                { 4, 0, 2 },
+                { 8, 1, 0 },
+                { 4, 3, 2 },
                 { 7, 6, 5 }
         };
         Board reuseableBoard_2 = new Board(reuseable2D_2);
