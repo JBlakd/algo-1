@@ -15,6 +15,8 @@ public class Board {
     private int[] a;
     private int squareSide;
     private int squareSize;
+    private int hamming;
+    private int manhattan;
 
     // create a board from an n-by-n array of tiles,
     // where tiles[row][col] = tile at (row, col)
@@ -36,6 +38,9 @@ public class Board {
                 aIndex++;
             }
         }
+
+        hamming = calcHamming();
+        manhattan = calcManhattan();
     }
 
     private void checkBoard(int[][] tiles) {
@@ -66,19 +71,23 @@ public class Board {
     }
 
     // number of tiles out of place
-    public int hamming() {
-        int hamming = 0;
+    private int calcHamming() {
+        int retVal = 0;
         // Loop until penultimate because the last element should be 0 and not needed to consider
         for (int i = 1; i < squareSize; i++) {
             if (a[i] != i) {
-                hamming++;
+                retVal++;
             }
         }
+        return retVal;
+    }
+
+    public int hamming() {
         return hamming;
     }
 
     // sum of Manhattan distances between tiles and goal
-    public int manhattan() {
+    private int calcManhattan() {
         int manhattanSum = 0;
 
         for (int i = 1; i <= squareSize; i++) {
@@ -114,6 +123,10 @@ public class Board {
         }
 
         return manhattanSum;
+    }
+
+    public int manhattan() {
+        return manhattan;
     }
 
     // is this board the goal board?
@@ -275,17 +288,17 @@ public class Board {
     // unit testing (not graded)
     public static void main(String[] args) {
         // This one passed
-        // int[][] reuseable2D = {
-        //         { 8, 1, 3 },
-        //         { 4, 0, 2 },
-        //         { 7, 6, 5 }
-        // };
-
         int[][] reuseable2D = {
-                { 8, 1, 0 },
-                { 4, 3, 2 },
+                { 8, 1, 3 },
+                { 4, 0, 2 },
                 { 7, 6, 5 }
         };
+
+        // int[][] reuseable2D = {
+        //         { 8, 1, 0 },
+        //         { 4, 3, 2 },
+        //         { 7, 6, 5 }
+        // };
         Board reuseableBoard = new Board(reuseable2D);
         StdOut.println(reuseableBoard.toString());
         StdOut.println("Dimension: " + reuseableBoard.dimension());
@@ -302,17 +315,17 @@ public class Board {
             StdOut.println(reuseableBoard.twin().toString());
         }
 
-        int[][] reuseable2D_2 = {
-                { 8, 1, 0 },
-                { 4, 3, 2 },
+        int[][] reuseable2D2 = {
+                { 8, 1, 3 },
+                { 4, 0, 2 },
                 { 7, 6, 5 }
         };
-        Board reuseableBoard_2 = new Board(reuseable2D_2);
-        if (reuseableBoard.equals(reuseableBoard_2)) {
-            StdOut.println("reuseableBoard is equal to reuseableBoard_2.");
+        Board reuseableBoard2 = new Board(reuseable2D2);
+        if (reuseableBoard.equals(reuseableBoard2)) {
+            StdOut.println("reuseableBoard is equal to reuseableBoard2.");
         }
         else {
-            StdOut.println("reuseableBoard is NOT equal to reuseableBoard_2.");
+            StdOut.println("reuseableBoard is NOT equal to reuseableBoard2.");
         }
 
         int[][] goalBoard2D = {
