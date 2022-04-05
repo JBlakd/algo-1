@@ -14,11 +14,11 @@ import java.util.Comparator;
 
 public class Solver {
 
-    private MinPQ pq;
-    private ArrayList<Board> cachedBoards;
+    // private MinPQ<SearchNode> pq;
+    // private ArrayList<Board> cachedBoards;
     private SearchNode goal;
-    private MinPQ pqTwin;
-    private ArrayList<Board> cachedBoardsTwin;
+    // private MinPQ<SearchNode> pqTwin;
+    // private ArrayList<Board> cachedBoardsTwin;
     private SearchNode goalTwin;
 
     private class SearchNode {
@@ -33,13 +33,13 @@ public class Solver {
         }
     }
 
-    private class HammingOrder implements Comparator<SearchNode> {
-        public int compare(SearchNode s1, SearchNode s2) {
-            return Integer
-                    .compare(s1.moves + s1.curBoard.hamming(),
-                             s2.moves + s2.curBoard.hamming());
-        }
-    }
+    // private class HammingOrder implements Comparator<SearchNode> {
+    //     public int compare(SearchNode s1, SearchNode s2) {
+    //         return Integer
+    //                 .compare(s1.moves + s1.curBoard.hamming(),
+    //                          s2.moves + s2.curBoard.hamming());
+    //     }
+    // }
 
     private class ManhattanOrder implements Comparator<SearchNode> {
         public int compare(SearchNode s1, SearchNode s2) {
@@ -53,21 +53,21 @@ public class Solver {
     public Solver(Board initial) {
         Board initialTwin = initial.twin();
 
-        cachedBoards = new ArrayList<Board>();
-        cachedBoardsTwin = new ArrayList<Board>();
+        ArrayList<Board> cachedBoards = new ArrayList<Board>();
+        ArrayList<Board> cachedBoardsTwin = new ArrayList<Board>();
 
         Comparator<SearchNode> manhattanOrder = new ManhattanOrder();
 
-        pq = new MinPQ(manhattanOrder);
+        MinPQ<SearchNode> pq = new MinPQ<SearchNode>(manhattanOrder);
         pq.insert(new SearchNode(initial, 0, null));
         cachedBoards.add(initial);
-        pqTwin = new MinPQ(manhattanOrder);
+        MinPQ<SearchNode> pqTwin = new MinPQ<SearchNode>(manhattanOrder);
         pqTwin.insert(new SearchNode(initialTwin, 0, null));
         cachedBoardsTwin.add(initialTwin);
 
         while (true) {
-            SearchNode curNode = (SearchNode) pq.delMin();
-            SearchNode curNodeTwin = (SearchNode) pqTwin.delMin();
+            SearchNode curNode = pq.delMin();
+            SearchNode curNodeTwin = pqTwin.delMin();
             if (curNode.curBoard.isGoal()) {
                 goal = curNode;
                 break;

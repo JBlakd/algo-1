@@ -99,22 +99,97 @@ public class Board {
 
             int curPosCopy = i;
             if (i < a[i]) {
-                while (curPosCopy + squareSide < a[i]) {
+                // while (curPosCopy + squareSide <= a[i]) {
+                //     curPosCopy += squareSide;
+                //     curManhattan++;
+                // }
+                // while (curPosCopy < a[i]) {
+                //     curPosCopy++;
+                //     // Check special case when incrementing by one results in next row
+                //     if (curPosCopy % squareSide == 1) {
+                //         curManhattan += squareSide;
+                //     }
+                //     else {
+                //         curManhattan++;
+                //     }
+                // }
+
+                // New method: change row until same row, and then in/decrement by one
+                // Loop to add row
+                while (true) {
+                    int curRowStart;
+                    int curRowEnd;
+                    if (curPosCopy % squareSide == 0) {
+                        curRowEnd = curPosCopy;
+                        curRowStart = curRowEnd - squareSide + 1;
+                    }
+                    else {
+                        curRowStart = curPosCopy - (curPosCopy % squareSide) + 1;
+                        curRowEnd = curRowStart + squareSide - 1;
+                    }
+                    // Check if destination is at the same row as curPosCopy
+                    if (a[i] >= curRowStart && a[i] <= curRowEnd) {
+                        break;
+                    }
                     curPosCopy += squareSide;
                     curManhattan++;
                 }
-                while (curPosCopy < a[i]) {
-                    curPosCopy++;
+                // Loop to increment or decrement by 1
+                while (curPosCopy != a[i]) {
+                    if (curPosCopy > a[i]) {
+                        curPosCopy--;
+                    }
+                    else {
+                        curPosCopy++;
+                    }
                     curManhattan++;
                 }
             }
             else {
-                while (curPosCopy - squareSide > a[i]) {
+                // while (curPosCopy - squareSide >= a[i]) {
+                //     curPosCopy -= squareSide;
+                //     curManhattan++;
+                // }
+                // while (curPosCopy > a[i]) {
+                //     curPosCopy--;
+                //     // Check special case when decrementing by one results in prev row
+                //     if (curPosCopy % squareSide == 0) {
+                //         curManhattan += squareSide;
+                //     }
+                //     else {
+                //         curManhattan++;
+                //     }
+                // }
+
+                // New method: change row until same row, and then in/decrement by one
+                // Loop to subtract row
+                while (true) {
+                    // calculate current row
+                    int curRowStart;
+                    int curRowEnd;
+                    if (curPosCopy % squareSide == 0) {
+                        curRowEnd = curPosCopy;
+                        curRowStart = curRowEnd - squareSide + 1;
+                    }
+                    else {
+                        curRowStart = curPosCopy - (curPosCopy % squareSide) + 1;
+                        curRowEnd = curRowStart + squareSide - 1;
+                    }
+                    // Check if destination is at the same row as curPosCopy
+                    if (a[i] >= curRowStart && a[i] <= curRowEnd) {
+                        break;
+                    }
                     curPosCopy -= squareSide;
                     curManhattan++;
                 }
-                while (curPosCopy > a[i]) {
-                    curPosCopy--;
+                // Loop to increment or decrement by 1
+                while (curPosCopy != a[i]) {
+                    if (curPosCopy > a[i]) {
+                        curPosCopy--;
+                    }
+                    else {
+                        curPosCopy++;
+                    }
                     curManhattan++;
                 }
             }
@@ -155,7 +230,7 @@ public class Board {
             return false;
         }
 
-        for (int i = 1; i < squareSize - 1; i++) {
+        for (int i = 1; i <= squareSize; i++) {
             if (this.a[i] != that.a[i]) {
                 return false;
             }
@@ -287,17 +362,22 @@ public class Board {
 
     // unit testing (not graded)
     public static void main(String[] args) {
-        // This one passed
         int[][] reuseable2D = {
-                { 8, 1, 3 },
-                { 4, 0, 2 },
-                { 7, 6, 5 }
+                { 5, 11, 14, 9 },
+                { 15, 3, 4, 1 },
+                { 10, 6, 2, 12 },
+                { 7, 0, 8, 13 }
         };
 
         // int[][] reuseable2D = {
-        //         { 8, 1, 0 },
-        //         { 4, 3, 2 },
-        //         { 7, 6, 5 }
+        //         { 5, 1, 8 },
+        //         { 2, 7, 3 },
+        //         { 4, 0, 6 }
+        // };
+
+        // int[][] reuseable2D = {
+        //         { 0, 3 },
+        //         { 2, 1 }
         // };
         Board reuseableBoard = new Board(reuseable2D);
         StdOut.println(reuseableBoard.toString());
@@ -316,10 +396,22 @@ public class Board {
         }
 
         int[][] reuseable2D2 = {
-                { 8, 1, 3 },
-                { 4, 0, 2 },
-                { 7, 6, 5 }
+                { 5, 11, 14, 9 },
+                { 15, 3, 4, 1 },
+                { 10, 6, 2, 12 },
+                { 7, 0, 8, 13 }
         };
+
+        // int[][] reuseable2D2 = {
+        //         { 5, 1, 8 },
+        //         { 2, 7, 3 },
+        //         { 4, 0, 6 }
+        // };
+        // int[][] reuseable2D2 = {
+        //         { 0, 3 },
+        //         { 2, 1 }
+        //
+        // };
         Board reuseableBoard2 = new Board(reuseable2D2);
         if (reuseableBoard.equals(reuseableBoard2)) {
             StdOut.println("reuseableBoard is equal to reuseableBoard2.");
@@ -339,6 +431,23 @@ public class Board {
         }
         else {
             StdOut.println("goalBoard is NOT a valid goal board.");
+        }
+
+        int[][] notEqual1 = {
+                { 1, 3 },
+                { 0, 2 }
+        };
+        Board notEqual1Board = new Board(notEqual1);
+        int[][] notEqual2 = {
+                { 1, 3 },
+                { 2, 0 }
+        };
+        Board notEqual2Board = new Board(notEqual2);
+        if (notEqual1Board.equals(notEqual2Board)) {
+            StdOut.println("notEqual1 equals notEqual2.");
+        }
+        else {
+            StdOut.println("notEqual1 does not equal notEqual2.");
         }
     }
 }
