@@ -51,6 +51,10 @@ public class Solver {
 
     // find a solution to the initial board (using the A* algorithm)
     public Solver(Board initial) {
+        if (initial == null) {
+            throw new IllegalArgumentException();
+        }
+
         Board initialTwin = initial.twin();
 
         ArrayList<Board> cachedBoards = new ArrayList<Board>();

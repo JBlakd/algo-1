@@ -205,7 +205,7 @@ public class Board {
 
     // is this board the goal board?
     public boolean isGoal() {
-        for (int i = 1; i < squareSize - 1; i++) {
+        for (int i = 1; i < squareSize; i++) {
             if (a[i] != i) {
                 return false;
             }
@@ -313,7 +313,7 @@ public class Board {
             if (done) {
                 break;
             }
-            
+
             // Are we on a zero?
             if (twinArray[i] == 0) {
                 continue;
@@ -341,18 +341,18 @@ public class Board {
 
     // unit testing (not graded)
     public static void main(String[] args) {
-        int[][] reuseable2D = {
-                { 5, 11, 14, 9 },
-                { 15, 3, 4, 1 },
-                { 10, 6, 2, 12 },
-                { 7, 0, 8, 13 }
-        };
-
         // int[][] reuseable2D = {
-        //         { 5, 1, 8 },
-        //         { 2, 7, 3 },
-        //         { 4, 0, 6 }
+        //         { 5, 11, 14, 9 },
+        //         { 15, 3, 4, 1 },
+        //         { 10, 6, 2, 12 },
+        //         { 7, 0, 8, 13 }
         // };
+
+        int[][] reuseable2D = {
+                { 5, 8, 7 },
+                { 1, 4, 6 },
+                { 3, 0, 2 }
+        };
 
         // int[][] reuseable2D = {
         //         { 0, 3 },
@@ -374,18 +374,18 @@ public class Board {
             StdOut.println(reuseableBoard.twin().toString());
         }
 
-        int[][] reuseable2D2 = {
-                { 5, 11, 14, 9 },
-                { 15, 3, 4, 1 },
-                { 10, 6, 2, 12 },
-                { 7, 0, 8, 13 }
-        };
-
         // int[][] reuseable2D2 = {
-        //         { 5, 1, 8 },
-        //         { 2, 7, 3 },
-        //         { 4, 0, 6 }
+        //         { 5, 11, 14, 9 },
+        //         { 15, 3, 4, 1 },
+        //         { 10, 6, 2, 12 },
+        //         { 7, 0, 8, 13 }
         // };
+
+        int[][] reuseable2D2 = {
+                { 5, 8, 7 },
+                { 1, 4, 6 },
+                { 3, 0, 2 }
+        };
         // int[][] reuseable2D2 = {
         //         { 0, 3 },
         //         { 2, 1 }
