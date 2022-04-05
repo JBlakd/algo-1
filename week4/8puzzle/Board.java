@@ -308,7 +308,12 @@ public class Board {
         int[] twinArray = Arrays.copyOf(a, a.length);
 
         // Try to look for a valid right-swap
+        boolean done = false;
         for (int i = 1; i < squareSize; i++) {
+            if (done) {
+                break;
+            }
+            
             // Are we on a zero?
             if (twinArray[i] == 0) {
                 continue;
@@ -328,7 +333,7 @@ public class Board {
             int temp = twinArray[i];
             twinArray[i] = twinArray[i + 1];
             twinArray[i + 1] = temp;
-            break;
+            done = true;
         }
 
         return new Board(toSquare(twinArray, squareSide));
