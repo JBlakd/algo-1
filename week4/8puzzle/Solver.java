@@ -22,9 +22,9 @@ public class Solver {
     private SearchNode goalTwin;
 
     private class SearchNode {
-        private Board curBoard;
-        private int moves;
-        private SearchNode prevSearchNode;
+        private final Board curBoard;
+        private final int moves;
+        private final SearchNode prevSearchNode;
 
         private SearchNode(Board curBoard, int moves, SearchNode prevSearchNode) {
             this.curBoard = curBoard;

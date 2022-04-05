@@ -5,18 +5,17 @@
  **************************************************************************** */
 
 import edu.princeton.cs.algs4.StdOut;
-import edu.princeton.cs.algs4.StdRandom;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Board {
 
-    private int[] a;
-    private int squareSide;
-    private int squareSize;
-    private int hamming;
-    private int manhattan;
+    private final int[] a;
+    private final int squareSide;
+    private final int squareSize;
+    private final int hamming;
+    private final int manhattan;
 
     // create a board from an n-by-n array of tiles,
     // where tiles[row][col] = tile at (row, col)
@@ -306,58 +305,33 @@ public class Board {
 
     // a board that is obtained by exchanging any pair of tiles
     public Board twin() {
-        // Choose random tile index
-        int randIdx = StdRandom.uniform(1, squareSize + 1);
-        while (a[randIdx] == 0) {
-            randIdx = StdRandom.uniform(1, squareSize + 1);
+        int[] twinArray = Arrays.copyOf(a, a.length);
+
+        // Try to look for a valid right-swap
+        for (int i = 1; i < squareSize; i++) {
+            // Are we on a zero?
+            if (twinArray[i] == 0) {
+                continue;
+            }
+
+            // Are we on the last column?
+            if (i % squareSide == 0) {
+                continue;
+            }
+
+            // Is the right neighbour element a zero?
+            if (twinArray[i + 1] == 0) {
+                continue;
+            }
+
+            // Should be all good to do the swap now
+            int temp = twinArray[i];
+            twinArray[i] = twinArray[i + 1];
+            twinArray[i + 1] = temp;
+            break;
         }
 
-        // determine which directions are swappable
-        // Left is 0, Top is 1, Right is 2, Bottom is 3
-        // boolean[] swappable = new boolean[4];
-        ArrayList<Integer> swappable = new ArrayList<Integer>();
-        // left
-        if (!(randIdx % squareSide == 1) && a[randIdx - 1] != 0) {
-            swappable.add(0);
-        }
-        // top
-        if (randIdx - squareSide >= 1 && a[randIdx - squareSide] != 0) {
-            swappable.add(1);
-        }
-        // right
-        if (!(randIdx % squareSide == 0) && a[randIdx + 1] != 0) {
-            swappable.add(2);
-        }
-        // bottom
-        if (randIdx + squareSide <= squareSize && a[randIdx + squareSide] != 0) {
-            swappable.add(3);
-        }
-
-        int randDir = swappable.get(StdRandom.uniform(swappable.size()));
-        int[] reuseableCopy1D = Arrays.copyOf(a, a.length);
-        Board retVal;
-
-        switch (randDir) {
-            case 0:
-                reuseableCopy1D[randIdx] = a[randIdx - 1];
-                reuseableCopy1D[randIdx - 1] = a[randIdx];
-                break;
-            case 1:
-                reuseableCopy1D[randIdx] = a[randIdx - squareSide];
-                reuseableCopy1D[randIdx - squareSide] = a[randIdx];
-                break;
-            case 2:
-                reuseableCopy1D[randIdx] = a[randIdx + 1];
-                reuseableCopy1D[randIdx + 1] = a[randIdx];
-                break;
-            case 3:
-                reuseableCopy1D[randIdx] = a[randIdx + squareSide];
-                reuseableCopy1D[randIdx + squareSide] = a[randIdx];
-                break;
-        }
-
-        retVal = new Board(toSquare(reuseableCopy1D, squareSide));
-        return retVal;
+        return new Board(toSquare(twinArray, squareSide));
     }
 
     // unit testing (not graded)
@@ -390,7 +364,7 @@ public class Board {
             StdOut.println(neighbor.toString());
         }
 
-        StdOut.println("4 example random twins: ");
+        StdOut.println("4 example identical twins: ");
         for (int i = 0; i < 4; i++) {
             StdOut.println(reuseableBoard.twin().toString());
         }
