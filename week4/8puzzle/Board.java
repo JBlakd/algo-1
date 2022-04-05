@@ -183,7 +183,7 @@ public class Board {
         ArrayList<Board> neighbors = new ArrayList<Board>();
         // Finding index of 0
         int zeroIndex = -1;
-        for (int i = 1; i < squareSize; i++) {
+        for (int i = 1; i <= squareSize; i++) {
             if (a[i] == 0) {
                 zeroIndex = i;
             }

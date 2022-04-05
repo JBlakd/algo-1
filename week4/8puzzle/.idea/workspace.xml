@@ -90,7 +90,7 @@
     <configuration name="Solver" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="Solver" />
       <module name="Algorithms, Part I" />
-      <option name="PROGRAM_PARAMETERS" value="puzzle04.txt" />
+      <option name="PROGRAM_PARAMETERS" value="puzzle3x3-10.txt" />
       <method v="2" />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -138,9 +138,9 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/Board.java</url>
-          <line>234</line>
-          <option name="timeStamp" value="6" />
+          <url>file://$PROJECT_DIR$/Solver.java</url>
+          <line>75</line>
+          <option name="timeStamp" value="8" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

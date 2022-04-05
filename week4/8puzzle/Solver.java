@@ -17,6 +17,9 @@ public class Solver {
     private MinPQ pq;
     private ArrayList<Board> cachedBoards;
     private SearchNode goal;
+    private MinPQ pqTwin;
+    private ArrayList<Board> cachedBoardsTwin;
+    private SearchNode goalTwin;
 
     private class SearchNode {
         private Board curBoard;
@@ -48,17 +51,29 @@ public class Solver {
 
     // find a solution to the initial board (using the A* algorithm)
     public Solver(Board initial) {
-        cachedBoards = new ArrayList<Board>();
+        Board initialTwin = initial.twin();
 
-        // pq = new MinPQ(new HammingOrder());
-        pq = new MinPQ(new ManhattanOrder());
+        cachedBoards = new ArrayList<Board>();
+        cachedBoardsTwin = new ArrayList<Board>();
+
+        Comparator<SearchNode> manhattanOrder = new ManhattanOrder();
+
+        pq = new MinPQ(manhattanOrder);
         pq.insert(new SearchNode(initial, 0, null));
         cachedBoards.add(initial);
+        pqTwin = new MinPQ(manhattanOrder);
+        pqTwin.insert(new SearchNode(initialTwin, 0, null));
+        cachedBoardsTwin.add(initialTwin);
 
         while (true) {
             SearchNode curNode = (SearchNode) pq.delMin();
+            SearchNode curNodeTwin = (SearchNode) pqTwin.delMin();
             if (curNode.curBoard.isGoal()) {
                 goal = curNode;
+                break;
+            }
+            if (curNodeTwin.curBoard.isGoal()) {
+                goalTwin = curNodeTwin;
                 break;
             }
 
@@ -78,21 +93,45 @@ public class Solver {
 
                 pq.insert(new SearchNode(neighborBoard, curNode.moves + 1, curNode));
             }
+
+            // add neighbouring SearchNodes to pqTwin
+            for (Board neighborBoard : curNodeTwin.curBoard.neighbors()) {
+                // Check if cachedBoards contain neighborBoard's equivalent
+                boolean cached = false;
+                for (Board cachedBoardTwin : cachedBoardsTwin) {
+                    if (cachedBoardTwin.equals(neighborBoard)) {
+                        cached = true;
+                        break;
+                    }
+                }
+                if (cached) {
+                    continue;
+                }
+
+                pqTwin.insert(new SearchNode(neighborBoard, curNodeTwin.moves + 1, curNodeTwin));
+            }
         }
 
-        // the goal should have been calculated now
+        // the goal should have been calculated now for either initial or initialTwin
+
+
+        if (isSolvable() && goalTwin != null) {
+            throw new RuntimeException("Initial board is solvable but goalTwin is not null.");
+        }
+        if (!isSolvable() && goalTwin == null) {
+            throw new RuntimeException("Initial board is unsolvable but goalTwin is null.");
+        }
     }
 
     // is the initial board solvable? (see below)
     public boolean isSolvable() {
-        // TODO isSolvable
-        return true;
+        return (goal != null);
     }
 
     // min number of moves to solve initial board; -1 if unsolvable
     public int moves() {
         // TODO -1 if unsolvable
-        if (goal == null) {
+        if (!isSolvable()) {
             return -1;
         }
 
@@ -102,7 +141,7 @@ public class Solver {
     // sequence of boards in a shortest solution; null if unsolvable
     public Iterable<Board> solution() {
         // TODO null if unsolvable
-        if (goal == null) {
+        if (!isSolvable()) {
             return null;
         }
 
