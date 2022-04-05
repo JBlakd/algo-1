@@ -96,6 +96,7 @@ public class Solver {
                 }
 
                 pq.insert(new SearchNode(neighborBoard, curNode.moves + 1, curNode));
+                cachedBoards.add(neighborBoard);
             }
 
             // add neighbouring SearchNodes to pqTwin
@@ -113,6 +114,7 @@ public class Solver {
                 }
 
                 pqTwin.insert(new SearchNode(neighborBoard, curNodeTwin.moves + 1, curNodeTwin));
+                cachedBoardsTwin.add(neighborBoard);
             }
         }
 
