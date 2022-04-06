@@ -9,7 +9,6 @@ import edu.princeton.cs.algs4.MinPQ;
 import edu.princeton.cs.algs4.ResizingArrayStack;
 import edu.princeton.cs.algs4.StdOut;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 
 public class Solver {
@@ -57,17 +56,17 @@ public class Solver {
 
         Board initialTwin = initial.twin();
 
-        ArrayList<Board> cachedBoards = new ArrayList<Board>();
-        ArrayList<Board> cachedBoardsTwin = new ArrayList<Board>();
+        // ArrayList<Board> cachedBoards = new ArrayList<Board>();
+        // ArrayList<Board> cachedBoardsTwin = new ArrayList<Board>();
 
         Comparator<SearchNode> manhattanOrder = new ManhattanOrder();
 
         MinPQ<SearchNode> pq = new MinPQ<SearchNode>(manhattanOrder);
         pq.insert(new SearchNode(initial, 0, null));
-        cachedBoards.add(initial);
+        // cachedBoards.add(initial);
         MinPQ<SearchNode> pqTwin = new MinPQ<SearchNode>(manhattanOrder);
         pqTwin.insert(new SearchNode(initialTwin, 0, null));
-        cachedBoardsTwin.add(initialTwin);
+        // cachedBoardsTwin.add(initialTwin);
 
         while (true) {
             SearchNode curNode = pq.delMin();
@@ -83,38 +82,21 @@ public class Solver {
 
             // add neighbouring SearchNodes to pq
             for (Board neighborBoard : curNode.curBoard.neighbors()) {
-                // Check if cachedBoards contain neighborBoard's equivalent
-                boolean cached = false;
-                for (Board cachedBoard : cachedBoards) {
-                    if (cachedBoard.equals(neighborBoard)) {
-                        cached = true;
-                        break;
-                    }
+                // Only insert if the neighbour doesn't equal prev, or prev is null
+                if (curNode.prevSearchNode == null || !neighborBoard
+                        .equals(curNode.prevSearchNode.curBoard)) {
+                    pq.insert(new SearchNode(neighborBoard, curNode.moves + 1, curNode));
                 }
-                if (cached) {
-                    continue;
-                }
-
-                pq.insert(new SearchNode(neighborBoard, curNode.moves + 1, curNode));
-                cachedBoards.add(neighborBoard);
             }
 
             // add neighbouring SearchNodes to pqTwin
             for (Board neighborBoard : curNodeTwin.curBoard.neighbors()) {
-                // Check if cachedBoards contain neighborBoard's equivalent
-                boolean cached = false;
-                for (Board cachedBoardTwin : cachedBoardsTwin) {
-                    if (cachedBoardTwin.equals(neighborBoard)) {
-                        cached = true;
-                        break;
-                    }
+                // Only insert if the neighbour doesn't equal prev, or prev is null
+                if (curNodeTwin.prevSearchNode == null || !neighborBoard
+                        .equals(curNodeTwin.prevSearchNode.curBoard)) {
+                    pqTwin.insert(
+                            new SearchNode(neighborBoard, curNodeTwin.moves + 1, curNodeTwin));
                 }
-                if (cached) {
-                    continue;
-                }
-
-                pqTwin.insert(new SearchNode(neighborBoard, curNodeTwin.moves + 1, curNodeTwin));
-                cachedBoardsTwin.add(neighborBoard);
             }
         }
 
