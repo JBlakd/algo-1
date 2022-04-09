@@ -80,11 +80,11 @@
       <recent name="C:\Users\ivanh\Documents\LocalWorkCopy\algo-1\week5\kdtree" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.KdTreeVisualizer">
+  <component name="RunManager" selected="Application.KdTree">
     <configuration name="KdTree" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="KdTree" />
       <module name="Algorithms, Part I" />
-      <option name="PROGRAM_PARAMETERS" value="input10.txt" />
+      <option name="PROGRAM_PARAMETERS" value="input1K.txt" />
       <method v="2" />
     </configuration>
     <configuration name="KdTreeGenerator" type="Application" factoryName="Application">
@@ -144,5 +144,20 @@
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Palette&#9;" order="3" />
     </layout>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.NullPointerException" package="java.lang" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/KdTree.java</url>
+          <line>238</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

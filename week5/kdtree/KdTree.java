@@ -8,6 +8,9 @@ import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.RectHV;
 import edu.princeton.cs.algs4.StdDraw;
+import edu.princeton.cs.algs4.StdOut;
+
+import java.util.ArrayList;
 
 public class KdTree {
 
@@ -32,6 +35,22 @@ public class KdTree {
         }
     }
 
+    private static class IteratedCount {
+        private int val;
+
+        private IteratedCount(int val) {
+            IteratedCount.this.val = val;
+        }
+
+        private void increment() {
+            val++;
+        }
+
+        private int get() {
+            return val;
+        }
+    }
+
     // construct an empty set of points
     public KdTree() {
         n = 0;
@@ -52,6 +71,7 @@ public class KdTree {
         if (curNode == null) {
             Node newNode = new Node(p);
             newNode.rect = rect;
+            n++;
             return newNode;
         }
 
@@ -185,14 +205,43 @@ public class KdTree {
         drawHelper(root, true);
     }
 
+    private void rangeHelper(RectHV rect, Node curNode, ArrayList<Point2D> arr, IteratedCount ic) {
+        if (curNode == null) {
+            return;
+        }
+
+        ic.increment();
+
+        if (rect.contains(curNode.p)) {
+            arr.add(curNode.p);
+        }
+
+        // pruning
+        if (curNode.lb != null && rect.intersects(curNode.lb.rect)) {
+            rangeHelper(rect, curNode.lb, arr, ic);
+        }
+        if (curNode.rt != null && rect.intersects(curNode.rt.rect)) {
+            rangeHelper(rect, curNode.rt, arr, ic);
+        }
+
+    }
+
     // all points that are inside the rectangle (or on the boundary)
     public Iterable<Point2D> range(RectHV rect) {
         if (rect == null) {
             throw new IllegalArgumentException();
         }
 
-        // TODO
-        return null;
+        ArrayList<Point2D> retVal = new ArrayList<Point2D>();
+        IteratedCount ic = new IteratedCount(0);
+        rangeHelper(rect, root, retVal, ic);
+
+        // StdOut.println(
+        //         "KdTree.range() iterated through " + ic.get() + " points out of " + size());
+        // StdOut.println("KdTree.range() iterated through " + ((double) ic.get() / size()) * 100
+        //                        + "% of points");
+
+        return retVal;
     }
 
     // a nearest neighbor in the set to point p; null if the set is empty
@@ -219,5 +268,19 @@ public class KdTree {
 
         // draw all
         kdTree.draw();
+
+        // draw rectangle
+        RectHV myRect = new RectHV(0.11, 0.2, 0.57, 0.8);
+        StdDraw.setPenColor(StdDraw.PRINCETON_ORANGE);
+        StdDraw.setPenRadius(0.0075);
+        myRect.draw();
+
+        StdDraw.setPenColor(StdDraw.GREEN);
+        StdDraw.setPenRadius(0.02);
+        StdOut.println("The rectagle contains the following points:");
+        for (Point2D containedPoint : kdTree.range(myRect)) {
+            containedPoint.draw();
+            StdOut.println(containedPoint.toString());
+        }
     }
 }
