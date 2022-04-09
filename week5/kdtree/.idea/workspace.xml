@@ -80,7 +80,7 @@
       <recent name="C:\Users\ivanh\Documents\LocalWorkCopy\algo-1\week5\kdtree" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.KdTree">
+  <component name="RunManager" selected="Application.KdTreeVisualizer">
     <configuration name="KdTree" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="KdTree" />
       <module name="Algorithms, Part I" />
@@ -98,8 +98,20 @@
       <module name="Algorithms, Part I" />
       <method v="2" />
     </configuration>
+    <configuration name="NearestNeighborVisualizer" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="NearestNeighborVisualizer" />
+      <module name="Algorithms, Part I" />
+      <option name="PROGRAM_PARAMETERS" value="input1K.txt" />
+      <method v="2" />
+    </configuration>
     <configuration name="PointSET" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="PointSET" />
+      <module name="Algorithms, Part I" />
+      <option name="PROGRAM_PARAMETERS" value="input1K.txt" />
+      <method v="2" />
+    </configuration>
+    <configuration name="RangeSearchVisualizer" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="RangeSearchVisualizer" />
       <module name="Algorithms, Part I" />
       <option name="PROGRAM_PARAMETERS" value="input1K.txt" />
       <method v="2" />
@@ -154,7 +166,7 @@
         </breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/KdTree.java</url>
-          <line>238</line>
+          <line>255</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>

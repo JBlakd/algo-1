@@ -9,6 +9,7 @@ import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.RectHV;
 import edu.princeton.cs.algs4.StdDraw;
 import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.StdRandom;
 
 import java.util.ArrayList;
 
@@ -48,6 +49,22 @@ public class KdTree {
 
         private int get() {
             return val;
+        }
+    }
+
+    private static class NearestPoint {
+        private Point2D nearestPoint;
+
+        private NearestPoint(Point2D p) {
+            nearestPoint = p;
+        }
+
+        private void set(Point2D p) {
+            nearestPoint = p;
+        }
+
+        private Point2D get() {
+            return nearestPoint;
         }
     }
 
@@ -244,14 +261,63 @@ public class KdTree {
         return retVal;
     }
 
+    private void nearestHelper(Node curNode, NearestPoint np, Point2D qp, boolean isVert,
+                               IteratedCount ic) {
+        if (curNode == null) {
+            return;
+        }
+
+        ic.increment();
+
+        // proceed no further if curNode is not eligible to be searched
+        // That is, if champion->qp is closer than qp->curNode's rectangle (perpendicular dist)
+        if (np.get().distanceSquaredTo(qp) < curNode.rect.distanceSquaredTo(qp)) {
+            return;
+        }
+
+        // Update champion if curNode is closer to qp than the champion is
+        if (curNode.p.distanceSquaredTo(qp) < np.get().distanceSquaredTo(qp)) {
+            np.set(curNode.p);
+        }
+
+        // Doing the correct comparison based on rank
+        int cmp;
+        if (isVert) {
+            cmp = Point2D.X_ORDER.compare(qp, curNode.p);
+        }
+        else {
+            cmp = Point2D.Y_ORDER.compare(qp, curNode.p);
+        }
+
+        // Now there are two subtrees to explore.
+        // FIRST explore the subtree on the same side as the point
+
+        if (cmp < 0) {
+            nearestHelper(curNode.lb, np, qp, !isVert, ic);
+            nearestHelper(curNode.rt, np, qp, !isVert, ic);
+        }
+        else {
+            nearestHelper(curNode.rt, np, qp, !isVert, ic);
+            nearestHelper(curNode.lb, np, qp, !isVert, ic);
+        }
+    }
+
     // a nearest neighbor in the set to point p; null if the set is empty
     public Point2D nearest(Point2D p) {
         if (p == null) {
             throw new IllegalArgumentException();
         }
 
-        // TODO
-        return null;
+        IteratedCount ic = new IteratedCount(0);
+        NearestPoint np = new NearestPoint(root.p);
+        nearestHelper(root, np, p, true, ic);
+
+        // StdOut.println(
+        //         "KdTree.nearest() iterated through " + ic.get() + " points out of " + size());
+        // StdOut.println("KdTree.nearest() iterated through " + ((double) ic.get() / size()) * 100
+        //                        + "% of points");
+
+        return np.get();
     }
 
     // unit testing of the methods (optional)
@@ -282,5 +348,16 @@ public class KdTree {
             containedPoint.draw();
             StdOut.println(containedPoint.toString());
         }
+
+        // draw random query point and nearest neighbour
+        StdDraw.setPenColor(StdDraw.BLACK);
+        StdDraw.setPenRadius(0.02);
+        Point2D randomPoint = new Point2D(StdRandom.uniform(0.0, 1.0), StdRandom.uniform(0.0, 1.0));
+        randomPoint.draw();
+        StdDraw.setPenRadius(0.01);
+        Point2D nearestPoint = kdTree.nearest(randomPoint);
+        randomPoint.drawTo(nearestPoint);
+        StdOut.println("The point nearest to " + randomPoint.toString() + " is " + nearestPoint
+                .toString());
     }
 }
