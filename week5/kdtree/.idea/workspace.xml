@@ -80,7 +80,24 @@
       <recent name="C:\Users\ivanh\Documents\LocalWorkCopy\algo-1\week5\kdtree" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.KdTreeVisualizer">
+    <configuration name="KdTree" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="KdTree" />
+      <module name="Algorithms, Part I" />
+      <option name="PROGRAM_PARAMETERS" value="input10.txt" />
+      <method v="2" />
+    </configuration>
+    <configuration name="KdTreeGenerator" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="KdTreeGenerator" />
+      <module name="Algorithms, Part I" />
+      <option name="PROGRAM_PARAMETERS" value="15" />
+      <method v="2" />
+    </configuration>
+    <configuration name="KdTreeVisualizer" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="KdTreeVisualizer" />
+      <module name="Algorithms, Part I" />
+      <method v="2" />
+    </configuration>
     <configuration name="PointSET" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="PointSET" />
       <module name="Algorithms, Part I" />

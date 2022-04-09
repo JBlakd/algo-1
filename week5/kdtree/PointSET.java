@@ -34,6 +34,10 @@ public class PointSET {
 
     // add the point to the set (if it is not already in the set)
     public void insert(Point2D p) {
+        if (p == null) {
+            throw new IllegalArgumentException();
+        }
+
         if (!ps.contains(p)) {
             ps.add(p);
         }
@@ -41,6 +45,10 @@ public class PointSET {
 
     // does the set contain point p?
     public boolean contains(Point2D p) {
+        if (p == null) {
+            throw new IllegalArgumentException();
+        }
+
         return ps.contains(p);
     }
 
@@ -53,6 +61,10 @@ public class PointSET {
 
     // all points that are inside the rectangle (or on the boundary)
     public Iterable<Point2D> range(RectHV rect) {
+        if (rect == null) {
+            throw new IllegalArgumentException();
+        }
+
         ArrayList<Point2D> retVal = new ArrayList<Point2D>();
         for (Point2D p : ps) {
             if (rect.contains(p)) {
@@ -65,6 +77,10 @@ public class PointSET {
 
     // a nearest neighbor in the set to point p; null if the set is empty
     public Point2D nearest(Point2D p) {
+        if (p == null) {
+            throw new IllegalArgumentException();
+        }
+
         // This point does lie on the unit square, so is not a valid point in this exercise
         Point2D champion = new Point2D(-1, -1);
         boolean first = true;
