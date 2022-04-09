@@ -15,7 +15,7 @@ import edu.princeton.cs.algs4.StdRandom;
 import java.util.ArrayList;
 
 public class PointSET {
-    private SET<Point2D> ps;
+    private final SET<Point2D> ps;
 
     // construct an empty set of points
     public PointSET() {
@@ -81,6 +81,10 @@ public class PointSET {
             throw new IllegalArgumentException();
         }
 
+        if (isEmpty()) {
+            return null;
+        }
+
         // This point does lie on the unit square, so is not a valid point in this exercise
         Point2D champion = new Point2D(-1, -1);
         boolean first = true;
@@ -125,7 +129,7 @@ public class PointSET {
 
         StdDraw.setPenColor(StdDraw.RED);
         StdDraw.setPenRadius(0.01);
-        StdOut.println("The rectagle contains the following points:");
+        StdOut.println("The rectangle contains the following points:");
         for (Point2D containedPoint : brute.range(myRect)) {
             containedPoint.draw();
             StdOut.println(containedPoint.toString());

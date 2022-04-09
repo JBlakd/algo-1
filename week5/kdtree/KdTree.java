@@ -29,7 +29,7 @@ public class KdTree {
                 throw new IllegalArgumentException();
             }
 
-            Node.this.p = p;
+            this.p = p;
             rect = null;        // TODO calc rect
             lb = null;          // TODO
             rt = null;          // TODO
@@ -40,7 +40,7 @@ public class KdTree {
         private int val;
 
         private IteratedCount(int val) {
-            IteratedCount.this.val = val;
+            this.val = val;
         }
 
         private void increment() {
@@ -117,7 +117,7 @@ public class KdTree {
             }
             curNode.lb = insertHelper(curNode.lb, p, !isVert, childRect);
         }
-        else if (cmp > 0) {
+        else if (cmp >= 0) {
             // Rectangle calculation
             RectHV childRect;
             if (isVert) {
@@ -176,7 +176,9 @@ public class KdTree {
                 curNode = curNode.rt;
             }
             else {
-                return true;
+                if (curNode.p.equals(p)) {
+                    return true;
+                }
             }
 
             isVert = !isVert;
@@ -332,6 +334,8 @@ public class KdTree {
             kdTree.insert(p);
         }
 
+        StdOut.println("kdTree size: " + kdTree.size());
+
         // draw all
         kdTree.draw();
 
@@ -343,7 +347,7 @@ public class KdTree {
 
         StdDraw.setPenColor(StdDraw.GREEN);
         StdDraw.setPenRadius(0.02);
-        StdOut.println("The rectagle contains the following points:");
+        StdOut.println("The rectangle contains the following points:");
         for (Point2D containedPoint : kdTree.range(myRect)) {
             containedPoint.draw();
             StdOut.println(containedPoint.toString());
